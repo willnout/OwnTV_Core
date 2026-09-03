@@ -50,15 +50,19 @@ class LocaleStore internal constructor(
 
     /**
      * Synchronous read of the persisted tag. Safe to call from `attachBaseContext`.
-     * Returns `""` (never null) when nothing is stored — i.e. follow the system default.
+     *
+     * aLink IPTV: a fresh install (no value persisted yet) defaults to [FORK_DEFAULT_UI_TAG]
+     * (Spanish, Latin America) instead of the device locale. An explicit "reset to system default"
+     * persists `""`, which is still honoured — only the *absence* of any stored value triggers the
+     * fork default. A read failure (corrupt value) also falls back to the fork default.
      */
     fun readBlocking(): String {
-        // SharedPreferences can contain a value of the wrong primitive type after a damaged or
-        // hand-edited migration; getString itself throws ClassCastException in that case. A corrupt
-        // locale must never take down Application.attachBaseContext, so treat every read failure as
-        // the system-default selection.
-        val stored = runCatching { preferences.getString(KEY_UI_LANGUAGE, "") }.getOrNull()
-        return normalize(stored) ?: AppLocale.SYSTEM_DEFAULT_TAG
+        // getString(key, null) — distinguishes "never set" (null → fork default) from the explicit
+        // system-default selection (stored ""). SharedPreferences can also hold a value of the wrong
+        // primitive type after a damaged migration; getString throws ClassCastException then, and a
+        // corrupt locale must never take down Application.attachBaseContext.
+        val stored = runCatching { preferences.getString(KEY_UI_LANGUAGE, null) }.getOrNull()
+        return normalize(stored) ?: normalize(FORK_DEFAULT_UI_TAG) ?: AppLocale.SYSTEM_DEFAULT_TAG
     }
 
     /** Canonicalizes a persisted/imported value, or returns null when it is not supported. */
@@ -95,6 +99,13 @@ class LocaleStore internal constructor(
     companion object {
         private const val KEY_UI_LANGUAGE = "ui_language"
         private const val PREFS_NAME = "owntv_locale"
+
+        /**
+         * aLink IPTV: the UI locale a fresh install starts in, before the user has chosen anything
+         * (BCP-47 tag; must be a [SupportedLocales] entry). Upstream OwnTV follows the device locale
+         * here; this fork ships for a Spanish-speaking user, so it defaults to Spanish (Latin America).
+         */
+        private const val FORK_DEFAULT_UI_TAG = "es-US"
 
         /**
          * A [LocaleStore] over the application-scoped `owntv_locale` SharedPreferences. Used both at

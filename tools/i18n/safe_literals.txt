@@ -1539,9 +1539,9 @@
 1	technical	core/src/main/java/tv/own/owntv/core/home/HomeFeed.kt	live:${channel.id}
 1	technical	core/src/main/java/tv/own/owntv/core/home/HomeFeed.kt	movie:${movie.id}
 1	empty	core/src/main/java/tv/own/owntv/core/i18n/AppLocale.kt	\0
-1	empty	core/src/main/java/tv/own/owntv/core/i18n/LocaleStore.kt	\0
 1	technical	core/src/main/java/tv/own/owntv/core/i18n/LocaleStore.kt	Failed to persist application locale
 1	assertion	core/src/main/java/tv/own/owntv/core/i18n/LocaleStore.kt	Unsupported application locale: ${tag.trim()}
+1	locale	core/src/main/java/tv/own/owntv/core/i18n/LocaleStore.kt	es-US
 1	technical	core/src/main/java/tv/own/owntv/core/i18n/LocaleStore.kt	owntv_locale
 1	preference-key	core/src/main/java/tv/own/owntv/core/i18n/LocaleStore.kt	ui_language
 3	uri	core/src/main/java/tv/own/owntv/core/launcher/LauncherDeepLink.kt	episode
@@ -2065,7 +2065,7 @@
 1	log	core/src/main/java/tv/own/owntv/core/repository/SourceTester.kt	test sourceId=${source.id} type=${source.type} -> ${result::class.simpleName}
 1	protocol	core/src/main/java/tv/own/owntv/core/settings/RemoteShortcuts.kt	$keyCode:${press.name}
 1	protocol	core/src/main/java/tv/own/owntv/core/settings/RemoteShortcuts.kt	${it.keyCode}$SEPARATOR${it.press.name}$SEPARATOR${it.action.name}
-32	empty	core/src/main/java/tv/own/owntv/core/settings/SettingsRepository.kt	\0
+30	empty	core/src/main/java/tv/own/owntv/core/settings/SettingsRepository.kt	\0
 1	protocol	core/src/main/java/tv/own/owntv/core/settings/SettingsRepository.kt	${mode.name}$SEPARATOR$manualDays
 3	preference-key	core/src/main/java/tv/own/owntv/core/settings/SettingsRepository.kt	,
 1	preference-key	core/src/main/java/tv/own/owntv/core/settings/SettingsRepository.kt	ALL
@@ -2113,6 +2113,7 @@
 1	preference-key	core/src/main/java/tv/own/owntv/core/settings/SettingsRepository.kt	epg_refill_checked
 1	preference-key	core/src/main/java/tv/own/owntv/core/settings/SettingsRepository.kt	epg_use_logos
 1	preference-key	core/src/main/java/tv/own/owntv/core/settings/SettingsRepository.kt	episode_view_mode
+1	locale	core/src/main/java/tv/own/owntv/core/settings/SettingsRepository.kt	es-MX
 1	preference-key	core/src/main/java/tv/own/owntv/core/settings/SettingsRepository.kt	external_player
 1	preference-key	core/src/main/java/tv/own/owntv/core/settings/SettingsRepository.kt	external_player_live
 1	preference-key	core/src/main/java/tv/own/owntv/core/settings/SettingsRepository.kt	external_player_movies

@@ -191,6 +191,14 @@ class SettingsRepository(private val context: Context, private val localeStore: 
      */
     private val repoScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
+    /**
+     * aLink IPTV: the TMDB content language a fresh install uses before the user picks one — the
+     * "es-MX" option the picker labels "Español (Latinoamérica)". Upstream OwnTV leaves this blank
+     * (TMDB's own en-US default); this fork ships for a Spanish-speaking user. An explicit pick of a
+     * different value — including the blank "TMDB default" row — is persisted and still wins.
+     */
+    private val forkDefaultMetadataLanguage = "es-MX"
+
     /** Result of importing the optional locale field without allowing bad backup data to abort the restore. */
     data class SettingsImportResult(
         val localePresent: Boolean = false,
@@ -686,11 +694,11 @@ class SettingsRepository(private val context: Context, private val localeStore: 
     suspend fun currentOpenSubtitlesServerUrl(): String = context.dataStore.data.first()[Keys.OPEN_SUBTITLES_SERVER_URL] ?: ""
 
     /**
-     * TMDB content language. Blank = TMDB's own default (en-US) — the pre-existing behaviour, so an
-     * upgrade never silently changes anyone's metadata. "auto" = follow the device locale, resolved at
-     * call time by [tv.own.owntv.core.metadata.MetadataConfig.resolvedLanguage].
+     * TMDB content language. Absent = [forkDefaultMetadataLanguage] (aLink IPTV default). A persisted
+     * blank = TMDB's own default (en-US); "auto" = follow the device locale, resolved at call time by
+     * [tv.own.owntv.core.metadata.MetadataConfig.resolvedLanguage].
      */
-    val metadataLanguage: Flow<String> = prefsFlow { it[Keys.METADATA_LANGUAGE] ?: "" }
+    val metadataLanguage: Flow<String> = prefsFlow { it[Keys.METADATA_LANGUAGE] ?: forkDefaultMetadataLanguage }
 
     suspend fun setMetadataLanguage(code: String) {
         context.dataStore.edit { it[Keys.METADATA_LANGUAGE] = code.trim() }
@@ -710,7 +718,7 @@ class SettingsRepository(private val context: Context, private val localeStore: 
             mode = parseMetadataMode(p),
             tmdbApiKey = p[Keys.TMDB_API_KEY] ?: "",
             customServerUrl = p[Keys.METADATA_SERVER_URL] ?: "",
-            language = p[Keys.METADATA_LANGUAGE] ?: "",
+            language = p[Keys.METADATA_LANGUAGE] ?: forkDefaultMetadataLanguage,
         )
     }
 
