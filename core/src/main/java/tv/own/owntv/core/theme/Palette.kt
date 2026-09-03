@@ -14,8 +14,8 @@ package tv.own.owntv.core.theme
  */
 object OwnTVPalette {
 
-    /** Brand mark colour (the OwnTV play logo) — constant, and the default teal accent. */
-    const val AccentCyan = 0xFF52DBC8L
+    /** Brand mark colour (the aLink chevron / the "Link" accent in the lockup) — constant. */
+    const val AccentCyan = 0xFF00B4D8L
 
     // ---------------- DARK (M3 dark over near-black #040e0b) ----------------
     const val DarkBackground = 0xFF040E0BL
@@ -88,9 +88,11 @@ private val TealPalette = AccentPalette(
     light = AccentRoleValues(0xFF006B5EL, 0xFFFFFFFFL, 0xFF6FF8E4L, 0xFF00201BL),
 )
 
+// BLUE == la paleta de marca aLink (03045E / 023E8A / 0077B6 / 0096C7 / 00B4D8 /
+// 48CAE4 / 90E0EF / ADE8F4 / CAF0F8). Es el acento por defecto de aLink IPTV.
 private val BluePalette = AccentPalette(
-    dark = AccentRoleValues(0xFF6FB0FFL, 0xFF00315CL, 0xFF134A7CL, 0xFFD3E4FFL),
-    light = AccentRoleValues(0xFF1565C0L, 0xFFFFFFFFL, 0xFFD6E3FFL, 0xFF001C3AL),
+    dark = AccentRoleValues(0xFF48CAE4L, 0xFF00344AL, 0xFF0077B6L, 0xFFCAF0F8L),
+    light = AccentRoleValues(0xFF0077B6L, 0xFFFFFFFFL, 0xFFADE8F4L, 0xFF001E3AL),
 )
 
 private val VioletPalette = AccentPalette(
