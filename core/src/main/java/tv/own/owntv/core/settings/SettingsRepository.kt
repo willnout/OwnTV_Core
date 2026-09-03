@@ -800,8 +800,13 @@ class SettingsRepository(private val context: Context, private val localeStore: 
         CatchupTimezone.MANUAL -> java.util.SimpleTimeZone(catchupOffsetMinutes.first() * 60_000, "catchup")
     }
 
-    /** Automatically check GitHub Releases for a newer version shortly after launch. */
-    val updateCheckOnStart: Flow<Boolean> = prefsFlow { it[Keys.UPDATE_CHECK_ON_START] ?: true }
+    /**
+     * Automatically check GitHub Releases for a newer version shortly after launch.
+     * aLink-IPTV: defaults to OFF (upstream OwnTV ships this ON). This fork is shared by hand and
+     * `willnout/aLink-IPTV` (UpdateManager.REPO) publishes no releases yet, so an automatic check
+     * would only ever surface a "couldn't check" toast. The user can still turn it on in Settings.
+     */
+    val updateCheckOnStart: Flow<Boolean> = prefsFlow { it[Keys.UPDATE_CHECK_ON_START] ?: false }
 
     suspend fun setUpdateCheckOnStart(enabled: Boolean) {
         context.dataStore.edit { it[Keys.UPDATE_CHECK_ON_START] = enabled }

@@ -303,6 +303,11 @@ class UpdateManager(
         private const val TAG = "UpdateManager"
         private const val SESSION_ENTRY = "owntv-update"
         private const val INSTALL_STATUS_ACTION = "tv.own.owntv.UPDATE_INSTALL_STATUS"
-        const val REPO = "ahXN00/OwnTV"
+        // aLink-IPTV: points at this fork's own release repo, not upstream ahXN00/OwnTV. Upstream
+        // releases carry applicationId `tv.own.owntv` signed with upstream's key, so on this fork
+        // (`cl.alink.iptv`, own keystore) they would never install over the running app anyway.
+        // While `willnout/aLink-IPTV` publishes no releases the check just reports "up to date" /
+        // a check error; the startup check is off by default (SettingsRepository.updateCheckOnStart).
+        const val REPO = "willnout/aLink-IPTV"
     }
 }
