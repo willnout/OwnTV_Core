@@ -373,6 +373,25 @@ class SourceImporter(
     private suspend fun doRestore(file: File, password: String?): Boolean =
         backup.import(file, backupPassword = password).fold(
             onSuccess = { summary ->
+                // A backup carries source config but no catalog (BackupManager backs up no
+                // channels/movies/series), and restore leaves every source with lastSyncAt = null.
+                // Nothing downstream kicks off a sync, so without this the app opens to an empty
+                // catalog until the user manually re-syncs each playlist. Enqueue a first sync for
+                // every un-synced source — same path SettingsViewModel uses after a scope edit.
+                runCatching {
+                    val unsynced = sourceDao.getAllOnce().filter { it.lastSyncAt == null }
+                    for (source in unsynced) {
+                        catalogSyncScheduler.enqueueSync(
+                            source.id,
+                            reason = "restore",
+                            contentTypes = SyncContentTypes.enabledFor(source),
+                            completesInitialSync = true,
+                        )
+                    }
+                    if (unsynced.isNotEmpty()) {
+                        catalogSyncScheduler.enqueueContentIndexBuild(reason = "restore")
+                    }
+                }
                 _state.value = ImportState.Success(
                     restoredItems = summary.items,
                     passwordsOmitted = password.isNullOrBlank(),

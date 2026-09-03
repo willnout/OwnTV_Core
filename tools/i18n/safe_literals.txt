@@ -2255,6 +2255,7 @@
 1	url	core/src/main/java/tv/own/owntv/core/setup/SourceImporter.kt	content://
 1	url	core/src/main/java/tv/own/owntv/core/setup/SourceImporter.kt	file://
 1	technical	core/src/main/java/tv/own/owntv/core/setup/SourceImporter.kt	fresh_add
+2	technical	core/src/main/java/tv/own/owntv/core/setup/SourceImporter.kt	restore
 2	technical	core/src/main/java/tv/own/owntv/core/stalker/StalkerAuthManager.kt	?
 1	log	core/src/main/java/tv/own/owntv/core/stalker/StalkerAuthManager.kt	StalkerAuth
 1	log	core/src/main/java/tv/own/owntv/core/stalker/StalkerAuthManager.kt	auth expired sourceId=${creds.sourceId} (${e.message}) — re-handshaking once
